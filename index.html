@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrightNest Studio</title>
+  <style>
+    :root {
+      --bg: #f7f9fb;
+      --surface: #ffffff;
+      --text: #17202a;
+      --muted: #5e6b78;
+      --primary: #0d7c86;
+      --primary-dark: #075d65;
+      --accent: #f3b23d;
+      --line: #dde5ec;
+      --shadow: 0 18px 50px rgba(22, 35, 48, 0.12);
+    }
+
+    body.dark {
+      --bg: #111827;
+      --surface: #1f2937;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --primary: #32c7d3;
+      --primary-dark: #69dce5;
+      --accent: #f8c25f;
+      --line: #334155;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .theme-toggle,
+    .menu-toggle,
+    .btn {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.25rem;
+    }
+
+    .hero {
+      padding: 72px 0 48px;
+      background:
+        linear-gradient(120deg, rgba(13, 124, 134, 0.16), rgba(243, 178, 61, 0.15)),
+        var(--bg);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+      align-items: center;
+      gap: 42px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--accent) 22%, transparent);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 18px 0 18px;
+      font-size: clamp(2.4rem, 6vw, 4.7rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 10px 26px rgba(13, 124, 134, 0.25);
+    }
+
+    .btn.secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .hero-panel {
+      min-height: 430px;
+      padding: 22px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .mock-window {
+      height: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .window-bar {
+      display: flex;
+      gap: 7px;
+      padding: 12px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .dot:nth-child(2) {
+      background: var(--primary);
+    }
+
+    .dot:nth-child(3) {
+      background: #ec6a5e;
+    }
+
+    .dashboard {
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat,
+    .chart,
+    .task {
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.55rem;
+      color: var(--primary);
+    }
+
+    .stat span,
+    .task span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .chart {
+      min-height: 150px;
+      display: flex;
+      align-items: end;
+      gap: 10px;
+    }
+
+    .bar {
+      flex: 1;
+      min-height: 36px;
+      border-radius: 6px 6px 0 0;
+      background: linear-gradient(var(--primary), var(--accent));
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      max-width: 680px;
+      margin-bottom: 30px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.12;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .service-card {
+      padding: 24px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 32px rgba(23, 32, 42, 0.06);
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--primary) 14%, transparent);
+      color: var(--primary);
+      font-size: 1.35rem;
+    }
+
+    .service-card h3 {
+      margin: 18px 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .service-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .work {
+      background: var(--surface);
+      border-block: 1px solid var(--line);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .case-study {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 26px;
+      align-items: center;
+      padding: 26px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+
+    .case-visual {
+      min-height: 260px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(13, 124, 134, 0.9), rgba(243, 178, 61, 0.86)),
+        url("https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=900&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .case-copy h3 {
+      margin: 0 0 10px;
+      font-size: 1.6rem;
+    }
+
+    .case-copy p {
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--primary);
+      font-size: 1.4rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .contact-info,
+    form {
+      padding: 26px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .contact-info p {
+      color: var(--muted);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 12px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-message {
+      min-height: 24px;
+      margin-top: 12px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 850px) {
+      .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav-links {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: 82px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px;
+        border-radius: 8px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .hero-grid,
+      .case-study,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 46px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .stat-row,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel,
+      .case-study,
+      .contact-info,
+      form {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="BrightNest Studio home">
+        <span class="brand-mark">B</span>
+        <span>BrightNest Studio</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☾</button>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Digital design and launch studio</span>
+          <h1>Build a sharper web presence for your next idea.</h1>
+          <p>
+            BrightNest Studio creates clean websites, simple brand systems, and practical launch assets for small teams that want to move quickly.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#contact">Start a Project</a>
+            <a class="btn secondary" href="#work">View Sample Work</a>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="Sample project dashboard">
+          <div class="mock-window">
+            <div class="window-bar">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <div class="dashboard">
+              <div class="stat-row">
+                <div class="stat">
+                  <strong>42%</strong>
+                  <span>More signups</span>
+                </div>
+                <div class="stat">
+                  <strong>3.1s</strong>
+                  <span>Load time</span>
+                </div>
+                <div class="stat">
+                  <strong>18k</strong>
+                  <span>Monthly visits</span>
+                </div>
+              </div>
+              <div class="chart" aria-hidden="true">
+                <span class="bar" style="height: 58px"></span>
+                <span class="bar" style="height: 96px"></span>
+                <span class="bar" style="height: 74px"></span>
+                <span class="bar" style="height: 128px"></span>
+                <span class="bar" style="height: 102px"></span>
+              </div>
+              <div class="task-list">
+                <div class="task"><strong>Homepage refresh</strong><span>Done</span></div>
+                <div class="task"><strong>Lead form setup</strong><span>Live</span></div>
+                <div class="task"><strong>Analytics review</strong><span>Today</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-head">
+          <h2>Everything needed for a polished first impression.</h2>
+          <p>Choose one service or combine them into a focused launch package.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="icon">◇</div>
+            <h3>Website Design</h3>
+            <p>Responsive pages with clear structure, confident visuals, and easy-to-read content.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon">✦</div>
+            <h3>Brand Starter Kit</h3>
+            <p>Logo direction, color palette, typography, and simple usage rules for consistency.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon">↗</div>
+            <h3>Launch Support</h3>
+            <p>Forms, basic SEO, analytics setup, and final checks before your site goes live.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <div class="container">
+        <div class="section-head">
+          <h2>Sample case studies.</h2>
+          <p>Use the tabs to switch between example projects powered by the JavaScript in this same file.</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Case study tabs">
+          <button class="tab active" type="button" data-project="startup">Startup</button>
+          <button class="tab" type="button" data-project="cafe">Cafe</button>
+          <button class="tab" type="button" data-project="coach">Coach</button>
+        </div>
+
+        <article class="case-study">
+          <div class="case-visual" id="caseVisual"></div>
+          <div class="case-copy">
+            <h3 id="caseTitle">SaaS landing page rebuild</h3>
+            <p id="caseDescription">
+              A focused product site with clearer pricing, a faster signup path, and a design system that made future pages easier to ship.
+            </p>
+            <div class="metrics">
+              <div class="metric">
+                <strong id="metricOne">42%</strong>
+                <span>signup lift</span>
+              </div>
+              <div class="metric">
+                <strong id="metricTwo">28%</strong>
+                <span>lower bounce</span>
+              </div>
+              <div class="metric">
+                <strong id="metricThree">9 days</strong>
+                <span>to launch</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container contact-grid">
+        <div class="contact-info">
+          <div class="section-head">
+            <h2>Tell us what you are building.</h2>
+            <p>Send a quick note and this demo form will respond instantly using JavaScript.</p>
+          </div>
+          <p><strong>Email:</strong> hello@brightnest.example</p>
+          <p><strong>Hours:</strong> Monday to Friday, 9 AM to 5 PM</p>
+        </div>
+
+        <form id="contactForm">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required />
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="What would you like to create?" required></textarea>
+
+          <button class="btn" type="submit">Send Message</button>
+          <div class="form-message" id="formMessage" role="status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span id="year"></span> BrightNest Studio. Sample one-file website.
+    </div>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const themeToggle = document.getElementById("themeToggle");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    const tabs = document.querySelectorAll(".tab");
+    const form = document.getElementById("contactForm");
+    const formMessage = document.getElementById("formMessage");
+
+    const projects = {
+      startup: {
+        title: "SaaS landing page rebuild",
+        description: "A focused product site with clearer pricing, a faster signup path, and a design system that made future pages easier to ship.",
+        metricOne: "42%",
+        metricTwo: "28%",
+        metricThree: "9 days",
+        image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=900&q=80"
+      },
+      cafe: {
+        title: "Neighborhood cafe website",
+        description: "A warm local site featuring the menu, online reservations, event updates, and photography that shows the real space.",
+        metricOne: "31%",
+        metricTwo: "2.4x",
+        metricThree: "12 days",
+        image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=80"
+      },
+      coach: {
+        title: "Personal coaching brand",
+        description: "A compact brand system and booking-focused website for a consultant launching a new coaching program.",
+        metricOne: "55%",
+        metricTwo: "19%",
+        metricThree: "7 days",
+        image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80"
+      }
+    };
+
+    function setProject(key) {
+      const project = projects[key];
+      document.getElementById("caseTitle").textContent = project.title;
+      document.getElementById("caseDescription").textContent = project.description;
+      document.getElementById("metricOne").textContent = project.metricOne;
+      document.getElementById("metricTwo").textContent = project.metricTwo;
+      document.getElementById("metricThree").textContent = project.metricThree;
+      document.getElementById("caseVisual").style.backgroundImage =
+        `linear-gradient(135deg, rgba(13, 124, 134, 0.82), rgba(243, 178, 61, 0.72)), url("${project.image}")`;
+    }
+
+    themeToggle.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      themeToggle.textContent = body.classList.contains("dark") ? "☀" : "☾";
+    });
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+      menuToggle.textContent = navLinks.classList.contains("open") ? "×" : "☰";
+    });
+
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.tagName === "A") {
+        navLinks.classList.remove("open");
+        menuToggle.textContent = "☰";
+      }
+    });
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        setProject(tab.dataset.project);
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      formMessage.textContent = `Thanks, ${name || "friend"}! This sample form is working.`;
+      form.reset();
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
